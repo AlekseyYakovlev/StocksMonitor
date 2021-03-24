@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Stocks Monitor</string>
+    <string name="main__title_stocks">Stocks</string>
+    <string name="main__title_favorites">Favorites</string>
+</resources>

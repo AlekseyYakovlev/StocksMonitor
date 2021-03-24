@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_stocks"
+        android:title="@string/main__title_stocks" />
+
+    <item
+        android:id="@+id/navigation_favorites"
+        android:title="@string/main__title_favorites" />
+
+</menu>
