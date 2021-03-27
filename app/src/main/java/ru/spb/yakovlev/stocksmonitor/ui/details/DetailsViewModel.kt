@@ -12,4 +12,8 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
     private val _text = MutableStateFlow("This is Details Fragment")
     val text: StateFlow<String> = _text
+
+    fun updateData(ticker: String) {
+        _text.value = ticker
+    }
 }
