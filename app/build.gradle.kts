@@ -47,7 +47,7 @@ android {
 dependencies {
 
     // Core
-    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.core:core-ktx:1.5.0-beta03")
 
     // UI
     implementation("androidx.appcompat:appcompat:1.2.0")
@@ -56,10 +56,10 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.1.0")
 
     // Activity KTX
-    implementation("androidx.activity:activity-ktx:1.3.0-alpha04")
+    implementation("androidx.activity:activity-ktx:1.3.0-alpha05")
 
     // Fragment KTX
-    implementation("androidx.fragment:fragment-ktx:1.3.1")
+    implementation("androidx.fragment:fragment-ktx:1.3.2")
 
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
@@ -80,8 +80,8 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
     implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
     kapt("com.google.dagger:hilt-compiler:${rootProject.extra["hiltVersion"]}")
-    val androidxHilt = "1.0.0-alpha03"
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:$androidxHilt")
+    val androidxHilt = "1.0.0-beta01"
+    //implementation("androidx.hilt:hilt-lifecycle-viewmodel:$androidxHilt")
     kapt("androidx.hilt:hilt-compiler:$androidxHilt")
     implementation("androidx.hilt:hilt-work:$androidxHilt")
 
