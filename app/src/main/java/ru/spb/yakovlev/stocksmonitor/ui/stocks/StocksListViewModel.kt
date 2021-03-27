@@ -13,19 +13,15 @@ class StocksListViewModel @Inject constructor(
     private val mokkData: MokkData,
 
     ) : ViewModel() {
-    private val _text = MutableStateFlow("This is StocksList Fragment")
-    val text: StateFlow<String> = _text
-
     val stocksList: Flow<List<StockItemData>> =
         mokkData.stocks.combine(mokkData.favorites){stocksList, favorites ->
-            stocksList.map { it.toStockItemData(it.ticker in favorites) }
+            stocksList.map { it.toStockItemData(it in favorites) }
         }
 
-    fun handleFavor(ticker: String, isFavorite: Boolean) {
+    fun handleFavor(ticker: String, isFavorite: Boolean): Boolean =
         mokkData.updateFavorites(ticker, isFavorite)
-    }
 
-    fun getIsFavoriteState(ticker: String): Boolean =
+    fun getIsFavoriteState(ticker: String): Flow<Boolean> =
         mokkData.getIsFavoriteState(ticker)
 
 }

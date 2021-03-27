@@ -14,9 +14,12 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.spb.yakovlev.stocksmonitor.R
 import ru.spb.yakovlev.stocksmonitor.databinding.FragmentStockItemBinding
 import ru.spb.yakovlev.stocksmonitor.databinding.FragmentStocksListBinding
+import ru.spb.yakovlev.stocksmonitor.navigation.Destination
+import ru.spb.yakovlev.stocksmonitor.navigation.Navigator
 import ru.spb.yakovlev.stocksmonitor.ui.base.BaseRVAdapter
 import ru.spb.yakovlev.stocksmonitor.ui.main.StockItemData
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class StocksListFragment : Fragment(R.layout.fragment_stocks_list) {
@@ -26,6 +29,9 @@ class StocksListFragment : Fragment(R.layout.fragment_stocks_list) {
     private val stocksListAdapter by lazy(::setupRecyclerViewAdapter)
     private val currencyFormat by lazy(::setupCurrencyFormat)
     private val darkItemBackground by lazy(::setupDarkItemBackground)
+
+    @Inject
+    lateinit var navigator: Navigator
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +45,7 @@ class StocksListFragment : Fragment(R.layout.fragment_stocks_list) {
             setHasFixedSize(true)
         }
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenStarted {
             viewModel.stocksList.collectLatest {
                 stocksListAdapter.updateData(it)
             }
@@ -62,13 +68,18 @@ class StocksListFragment : Fragment(R.layout.fragment_stocks_list) {
                     tvCurrentPrice.text = currencyFormat.format(itemData.price)
                     tvDayDelta.text = currencyFormat.format(itemData.delta)
 
-                    icStar.isChecked=viewModel.getIsFavoriteState(itemData.ticker)
+                    lifecycleScope.launchWhenResumed {
+                        viewModel.getIsFavoriteState(itemData.ticker).collectLatest {
+                            icStar.isChecked = it
+                        }
+                    }
 
                     icStar.setOnClickListener {
-                        viewModel.handleFavor(
-                            itemData.ticker,
-                            !icStar.isChecked
-                        )
+                        viewModel.handleFavor(itemData.ticker, !icStar.isChecked)
+                    }
+
+                    root.setOnClickListener {
+                        navigator.goTo(Destination.TICKER_DETAILS_FRAGMENT, itemData.ticker)
                     }
                 }
             },

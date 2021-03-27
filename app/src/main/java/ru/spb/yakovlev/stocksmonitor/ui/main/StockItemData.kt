@@ -11,7 +11,6 @@ data class StockItemData(
     val currency: String = "",
     val delta: Float = 0f,
     val logo: String = "",
-    val isFavorite: Boolean = false,
 ) : RvItemData
 
 fun Stock.toStockItemData(isFavorite: Boolean) =
@@ -23,5 +22,4 @@ fun Stock.toStockItemData(isFavorite: Boolean) =
         currency = currency,
         delta = delta,
         logo = logo,
-        isFavorite = isFavorite
     )

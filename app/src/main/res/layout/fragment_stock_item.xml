@@ -6,7 +6,7 @@
     android:background="@drawable/stock_item__shape"
     android:elevation="@dimen/rv_item_elevation"
     android:layout_width="match_parent"
-    android:layout_marginHorizontal="@dimen/spacing_4"
+    android:layout_marginHorizontal="@dimen/spacing_16"
     android:layout_marginVertical="@dimen/spacing_4"
     android:layout_height="wrap_content">
 
