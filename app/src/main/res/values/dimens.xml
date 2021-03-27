@@ -10,7 +10,14 @@
 
     <dimen name="rv_item_elevation">4dp</dimen>
 
+    <dimen name="default_icon_size">24dp</dimen>
+
+
     <dimen name="stock_item__shape_corner_radius">16dp</dimen>
     <dimen name="stock_item__logo_corner_radius">12dp</dimen>
     <dimen name="stock_item__logo_size">52dp</dimen>
+    <dimen name="search__corner_radius">40dp</dimen>
+    <dimen name="search__stroke_width">1dp</dimen>
+    <dimen name="search__stroke_selected_width">2dp</dimen>
+    <dimen name="search__search_bar_height">48dp</dimen>
 </resources>
