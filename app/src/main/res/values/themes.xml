@@ -28,6 +28,10 @@
         <item name="android:textSize">28sp</item>
     </style>
 
+    <style name="H1.Black">
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
     <style name="H2" parent="TextAppearance.AppCompat.Display2">
         <item name="fontFamily">@font/montserrat</item>
         <item name="android:fontFamily">@font/montserrat</item>

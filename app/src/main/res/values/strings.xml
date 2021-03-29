@@ -3,4 +3,6 @@
     <string name="main__title_stocks">Stocks</string>
     <string name="main__title_favorites">Favorites</string>
     <string name="search__default_text">Find company or ticker</string>
+    <string name="search_recent_title">You’ve searched for this</string>
+    <string name="search_popular_title">Popular requests</string>
 </resources>

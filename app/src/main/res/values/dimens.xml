@@ -20,4 +20,8 @@
     <dimen name="search__stroke_width">1dp</dimen>
     <dimen name="search__stroke_selected_width">2dp</dimen>
     <dimen name="search__search_bar_height">48dp</dimen>
+
+    <dimen name="search__layout_height_collapesed">48dp</dimen>
+    <dimen name="search__layout_height_expanded">800dp</dimen>
+
 </resources>
