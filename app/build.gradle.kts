@@ -69,7 +69,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
 
     // Lifecycle
-    val lifecycleVersion = "2.3.0"
+    val lifecycleVersion = "2.3.1"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
@@ -107,6 +107,19 @@ dependencies {
     val workVersion = "2.5.0"
     implementation("androidx.work:work-runtime-ktx:$workVersion")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
+
+    // Retrofit + OkHttp
+    val okHttpVersion = "5.0.0-alpha.2"
+    val retofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:retrofit:$retofitVersion")
+    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
+
+    // Moshi
+    val moshiVersion = "1.11.0"
+    implementation ("com.squareup.retrofit2:converter-moshi:$retofitVersion")
+    implementation ("com.squareup.moshi:moshi-kotlin:$moshiVersion")
+    kapt ("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
     // ViewBindingPropertyDelegate
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.5")
