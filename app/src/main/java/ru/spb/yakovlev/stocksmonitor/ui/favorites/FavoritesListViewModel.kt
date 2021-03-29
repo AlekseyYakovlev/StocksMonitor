@@ -15,7 +15,7 @@ class FavoritesListViewModel @Inject constructor(
     ) : ViewModel() {
     val stocksList: Flow<List<StockItemData>> =
         mokkData.favorites.map{stocksList ->
-            stocksList.map { it.toStockItemData(true) }
+            stocksList.map { it.toStockItemData() }
         }
 
     fun handleFavor(ticker: String, isFavorite: Boolean): Boolean =

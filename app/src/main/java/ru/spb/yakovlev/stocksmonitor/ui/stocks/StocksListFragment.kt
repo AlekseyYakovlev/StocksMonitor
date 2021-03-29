@@ -75,7 +75,7 @@ class StocksListFragment : Fragment(R.layout.fragment_stocks_list) {
                     }
 
                     icStar.setOnClickListener {
-                        viewModel.handleFavor(itemData.ticker, !icStar.isChecked)
+                        viewModel.handleStarClick(itemData.ticker, !icStar.isChecked)
                     }
 
                     root.setOnClickListener {

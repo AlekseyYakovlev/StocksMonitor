@@ -4,27 +4,32 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import ru.spb.yakovlev.stocksmonitor.R
 import ru.spb.yakovlev.stocksmonitor.databinding.FragmentMainBinding
 import ru.spb.yakovlev.stocksmonitor.ui.favorites.FavoritesListFragment
 import ru.spb.yakovlev.stocksmonitor.ui.search.SearchResultsFragment
+import ru.spb.yakovlev.stocksmonitor.ui.search.SearchScreenState
+import ru.spb.yakovlev.stocksmonitor.ui.search.SearchViewModel
 import ru.spb.yakovlev.stocksmonitor.ui.stocks.StocksListFragment
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel by activityViewModels<SearchViewModel>()
     private val vb by viewBinding(FragmentMainBinding::bind)
 
-    private lateinit var collectionAdapter: VPCollectionAdapter
+    private lateinit var collectionAdapter: VPCollectionAdapterOld
+    private var lastScreenState = SearchScreenState()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,17 +38,34 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun setupViews() {
         setupViewPager()
-
+        setupSearch()
     }
 
-    private fun setupSearch(){
+    private fun setupSearch() {
+        lifecycleScope.launchWhenResumed {
+            viewModel.searchScreenState.collectLatest(::renderSearchState)
+        }
+    }
 
+    private fun renderSearchState(state: SearchScreenState) {
+        if (lastScreenState.isDefaultScreenShown != state.isDefaultScreenShown) {
+            vb.tabLayout.isVisible = state.isDefaultScreenShown
+            vb.pagerContainer.isVisible = state.isDefaultScreenShown
+        }
+        if (lastScreenState.areSuggestionsShown != state.areSuggestionsShown) {
+            vb.tabLayout.isVisible = !state.areSuggestionsShown
+            vb.searchSuggestionsContainer.isVisible = state.areSuggestionsShown
+        }
+        if (lastScreenState.areResultsShown != state.areResultsShown) {
+            vb.tabLayout.isVisible = !state.areResultsShown
+            vb.searchResultsContainer.isVisible = state.areResultsShown
+        }
 
-
+        lastScreenState = state.copy()
     }
 
     private fun setupViewPager() {
-        collectionAdapter = VPCollectionAdapter(this)
+        collectionAdapter = VPCollectionAdapterOld(this)
         vb.pager.adapter = collectionAdapter
 
         TabLayoutMediator(vb.tabLayout, vb.pager) { tab, position ->
@@ -56,10 +78,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         vb.tabLayout.apply {
             (0 until tabCount).forEach { i ->
-                getTabAt(i)?.also {tab->
+                getTabAt(i)?.also { tab ->
                     val tabTextView = TextView(requireContext())
                     tab.customView = tabTextView
-                   with(tabTextView)  {
+                    with(tabTextView) {
                         if (tab.isSelected) setTextAppearance(R.style.Tabs_H1)
                         else {
                             setTextAppearance(R.style.Tabs_H2)
@@ -87,7 +109,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
 }
 
-class VPCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class VPCollectionAdapterOld(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
 

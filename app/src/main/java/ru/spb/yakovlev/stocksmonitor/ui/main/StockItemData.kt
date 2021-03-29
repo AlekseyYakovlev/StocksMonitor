@@ -13,7 +13,7 @@ data class StockItemData(
     val logo: String = "",
 ) : RvItemData
 
-fun Stock.toStockItemData(isFavorite: Boolean) =
+fun Stock.toStockItemData() =
     StockItemData(
         id = ticker,
         ticker = ticker,
