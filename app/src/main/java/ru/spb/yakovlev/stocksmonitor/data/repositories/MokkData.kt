@@ -1,7 +1,11 @@
 package ru.spb.yakovlev.stocksmonitor.data.repositories
 
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import ru.spb.yakovlev.stocksmonitor.model.Stock
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,10 +21,26 @@ class MokkData @Inject constructor() {
         add("AMZN")
     }
 
+    val popularQueries = mokkStocksList.map { it.ticker }
+
+    private val _resentQueriesQueue = LinkedList<String>()
+    private val _resentQueries = MutableStateFlow(_resentQueriesQueue.toList())
+    val resentQueries: StateFlow<List<String>> = _resentQueries
+
+    fun updateResentQueries(newQuery: String) {
+        _resentQueriesQueue.remove(newQuery)
+        _resentQueriesQueue.addLast(newQuery)
+        if (_resentQueriesQueue.size > 20) _resentQueriesQueue.pollFirst()
+        _resentQueries.value = _resentQueriesQueue.reversed()
+    }
+
     private val _favorites =
         MutableStateFlow<List<Stock>>(mokkStocksList.filter { it.ticker in favoriteStocks })
     val favorites: StateFlow<List<Stock>> = _favorites
 
+    fun getSearchResults(query: String): List<Stock> = mokkStocksList.filter {
+        it.ticker.contains(query, true) || it.compName.contains(query, true)
+    }
 
     fun updateFavorites(ticker: String, isFavorite: Boolean): Boolean {
         if (isFavorite) favoriteStocks.add(ticker)
@@ -33,6 +53,10 @@ class MokkData @Inject constructor() {
         favorites.map { list ->
             list.map { it.ticker }.contains(ticker)
         }
+
+    fun getStockByTicker(ticker: String): Flow<Stock> =
+        stocks.map { list -> list.first() { it.ticker == ticker } }
+
 
     private fun generateMokkStocks(): MutableList<Stock> = mutableListOf(
         Stock(
