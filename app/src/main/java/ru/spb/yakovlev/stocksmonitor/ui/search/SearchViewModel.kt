@@ -3,6 +3,8 @@ package ru.spb.yakovlev.stocksmonitor.ui.search
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import ru.spb.yakovlev.stocksmonitor.data.repositories.MokkData
 import ru.spb.yakovlev.stocksmonitor.ui.main.StockItemData
@@ -17,6 +19,8 @@ class SearchViewModel @Inject constructor(
     val searchScreenState: StateFlow<SearchScreenState> = _searchScreenState
 
     // search results
+    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class)
     val stocksList: Flow<List<StockItemData>> = searchScreenState
         .map { it.query }
         .distinctUntilChanged()
