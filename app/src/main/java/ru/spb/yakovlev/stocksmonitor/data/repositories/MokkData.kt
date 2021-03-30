@@ -9,11 +9,23 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
+interface StocksDataProvider {
+    val stocks: StateFlow<List<Stock>>
+    val favorites: StateFlow<List<Stock>>
+    val popularQueries: List<String>
+    val resentQueries: StateFlow<List<String>>
+    fun updateResentQueries(newQuery: String)
+    fun getSearchResults(query: String): List<Stock>
+    fun updateFavorites(ticker: String, isFavorite: Boolean): Boolean
+    fun getIsFavoriteState(ticker: String): Flow<Boolean>
+    fun getStockByTicker(ticker: String): Flow<Stock>
+}
+
 @Singleton
-class MokkData @Inject constructor() {
+class MokkData @Inject constructor() : StocksDataProvider {
     private val mokkStocksList: MutableList<Stock> = generateMokkStocks()
     private val _stocks = MutableStateFlow<List<Stock>>(mokkStocksList)
-    val stocks: StateFlow<List<Stock>> = _stocks
+    override val stocks: StateFlow<List<Stock>> = _stocks
 
 
     private val favoriteStocks = mutableSetOf<String>().apply {
@@ -21,13 +33,13 @@ class MokkData @Inject constructor() {
         add("AMZN")
     }
 
-    val popularQueries = mokkStocksList.map { it.ticker }
+    override val popularQueries = mokkStocksList.map { it.ticker }
 
     private val _resentQueriesQueue = LinkedList<String>()
     private val _resentQueries = MutableStateFlow(_resentQueriesQueue.toList())
-    val resentQueries: StateFlow<List<String>> = _resentQueries
+    override val resentQueries: StateFlow<List<String>> = _resentQueries
 
-    fun updateResentQueries(newQuery: String) {
+    override fun updateResentQueries(newQuery: String) {
         _resentQueriesQueue.remove(newQuery)
         _resentQueriesQueue.addLast(newQuery)
         if (_resentQueriesQueue.size > 20) _resentQueriesQueue.pollFirst()
@@ -36,25 +48,25 @@ class MokkData @Inject constructor() {
 
     private val _favorites =
         MutableStateFlow<List<Stock>>(mokkStocksList.filter { it.ticker in favoriteStocks })
-    val favorites: StateFlow<List<Stock>> = _favorites
+    override val favorites: StateFlow<List<Stock>> = _favorites
 
-    fun getSearchResults(query: String): List<Stock> = mokkStocksList.filter {
+    override fun getSearchResults(query: String): List<Stock> = mokkStocksList.filter {
         it.ticker.contains(query, true) || it.compName.contains(query, true)
     }
 
-    fun updateFavorites(ticker: String, isFavorite: Boolean): Boolean {
+    override fun updateFavorites(ticker: String, isFavorite: Boolean): Boolean {
         if (isFavorite) favoriteStocks.add(ticker)
         else favoriteStocks.remove(ticker)
         _favorites.value = mokkStocksList.filter { it.ticker in favoriteStocks }
         return isFavorite
     }
 
-    fun getIsFavoriteState(ticker: String): Flow<Boolean> =
+    override fun getIsFavoriteState(ticker: String): Flow<Boolean> =
         favorites.map { list ->
             list.map { it.ticker }.contains(ticker)
         }
 
-    fun getStockByTicker(ticker: String): Flow<Stock> =
+    override fun getStockByTicker(ticker: String): Flow<Stock> =
         stocks.map { list -> list.first() { it.ticker == ticker } }
 
 
