@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.spb.yakovlev.stocksmonitor.R
 import ru.spb.yakovlev.stocksmonitor.databinding.FragmentDetailsBinding
 import ru.spb.yakovlev.stocksmonitor.navigation.Navigator
-import ru.spb.yakovlev.stocksmonitor.ui.main.VPCollectionAdapterOld
+import ru.spb.yakovlev.stocksmonitor.ui.chart.ChartFragmentFragment
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,7 +28,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private val vb by viewBinding(FragmentDetailsBinding::bind)
     private val ticker by lazy { args.ticker }
 
-    private lateinit var collectionAdapter: VPCollectionAdapterOld
+    private lateinit var collectionAdapter: VPCollectionAdapterDetails
 
     @Inject
     lateinit var navigator: Navigator
@@ -38,7 +39,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     }
 
     private fun setupViews() {
-       // val ticker = args.ticker
+        // val ticker = args.ticker
 
         vb.icBack.setOnClickListener {
             navigator.back()
@@ -52,18 +53,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             }
         }
         vb.icStar.setOnClickListener {
-            viewModel.handleStarClick(ticker,!vb.icStar.isChecked)
+            viewModel.handleStarClick(ticker, !vb.icStar.isChecked)
         }
+        setupViewPager()
+
     }
 
     private fun setupViewPager() {
-        collectionAdapter = VPCollectionAdapterOld(this)
+        collectionAdapter = VPCollectionAdapterDetails(this)
         vb.pager.adapter = collectionAdapter
 
         TabLayoutMediator(vb.tabLayout, vb.pager) { tab, position ->
             tab.text = when (position) {
-                0 -> resources.getString(R.string.main__title_stocks)
-                1 -> resources.getString(R.string.main__title_favorites)
+                0 -> resources.getString(R.string.details__title_chart)
+                1 -> resources.getString(R.string.details__title_summery)
+                2 -> resources.getString(R.string.details__title_news)
                 else -> "Error"
             }
         }.attach()
@@ -74,9 +78,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     val tabTextView = TextView(requireContext())
                     tab.customView = tabTextView
                     with(tabTextView) {
-                        if (tab.isSelected) setTextAppearance(R.style.Tabs_H1)
+                        if (tab.isSelected) setTextAppearance(R.style.Tabs_H2_Black)
                         else {
-                            setTextAppearance(R.style.Tabs_H2)
+                            setTextAppearance(R.style.Tabs_H3)
                         }
                         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
                         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -87,15 +91,29 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
-                    (tab.customView as TextView).setTextAppearance(R.style.Tabs_H1)
+                    (tab.customView as TextView).setTextAppearance(R.style.Tabs_H2_Black)
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab) {
-                    (tab.customView as TextView).setTextAppearance(R.style.Tabs_H2)
+                    (tab.customView as TextView).setTextAppearance(R.style.Tabs_H3)
                 }
 
                 override fun onTabReselected(tab: TabLayout.Tab) = Unit
             })
         }
     }
+}
+
+class VPCollectionAdapterDetails(fragment: Fragment) : FragmentStateAdapter(fragment) {
+
+    override fun getItemCount(): Int = 3
+
+    override fun createFragment(position: Int): Fragment =
+        when (position) {
+            0 -> ChartFragmentFragment()
+            1 -> ChartFragmentFragment()
+            2 -> ChartFragmentFragment()
+            else -> ChartFragmentFragment()
+        }
+
 }

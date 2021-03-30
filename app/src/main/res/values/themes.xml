@@ -72,4 +72,12 @@
         <item name="android:textColor">?attr/colorPrimaryVariant</item>
     </style>
 
+    <style name="Tabs.H2.Black" parent="H2">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Tabs.H3" parent="H3">
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
+    </style>
+
 </resources>

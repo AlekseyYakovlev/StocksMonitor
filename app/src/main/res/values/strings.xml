@@ -5,4 +5,7 @@
     <string name="search__default_text">Find company or ticker</string>
     <string name="search_recent_title">You’ve searched for this</string>
     <string name="search_popular_title">Popular requests</string>
+    <string name="details__title_chart">Chart</string>
+    <string name="details__title_summery">Summery</string>
+    <string name="details__title_news">News</string>
 </resources>
