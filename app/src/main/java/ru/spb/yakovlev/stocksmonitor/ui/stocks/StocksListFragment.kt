@@ -24,8 +24,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class StocksListFragment : Fragment(R.layout.fragment_stocks_list) {
 
-    private val viewModel: StocksListViewModel by viewModels()
-    private val vb: FragmentStocksListBinding by viewBinding(FragmentStocksListBinding::bind)
+    private val viewModel by viewModels<StocksListViewModel>()
+    private val vb by viewBinding(FragmentStocksListBinding::bind)
     private val stocksListAdapter by lazy(::setupRecyclerViewAdapter)
     private val currencyFormat by lazy(::setupCurrencyFormat)
     private val darkItemBackground by lazy(::setupDarkItemBackground)
@@ -65,8 +65,12 @@ class StocksListFragment : Fragment(R.layout.fragment_stocks_list) {
                     icLogo.load(itemData.logo)
                     tvTicker.text = itemData.ticker
                     tvCompanyName.text = itemData.compName
+
                     tvCurrentPrice.text = currencyFormat.format(itemData.price)
+
                     tvDayDelta.text = currencyFormat.format(itemData.delta)
+                    if(itemData.delta > 0) tvDayDelta.setTextAppearance(R.style.Body_Green)
+                    else tvDayDelta.setTextAppearance(R.style.Body_Red)
 
                     lifecycleScope.launchWhenResumed {
                         viewModel.getIsFavoriteState(itemData.ticker).collectLatest {

@@ -56,6 +56,14 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="Body.Green" parent="Body">
+        <item name="android:textColor">@color/green</item>
+    </style>
+
+    <style name="Body.Red" parent="Body">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
     <style name="Tabs.H1" parent="H1">
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
