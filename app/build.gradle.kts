@@ -32,6 +32,17 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+
+
+    flavorDimensions("serverType")
+    productFlavors {
+        create("serverType") {
+            buildConfigField("String", "BASE_URL", "\"https://finnhub.io/api/v1/\"")
+            buildConfigField("String", "WEB_SOCKET", "\"wss://ws.finnhub.io\"")
+            buildConfigField("String", "API_KEY", "\"sandbox_c19sl0v48v6tl8v9p8g0\"")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -123,6 +134,9 @@ dependencies {
 
     // ViewBindingPropertyDelegate
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.5")
+
+    // kotlinx-datetime
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
