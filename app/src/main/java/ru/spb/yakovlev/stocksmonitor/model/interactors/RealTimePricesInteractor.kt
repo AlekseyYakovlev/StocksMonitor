@@ -1,14 +1,14 @@
 package ru.spb.yakovlev.stocksmonitor.model.interactors
 
-import ru.spb.yakovlev.stocksmonitor.data.repositories.RealTimeQuotesProvider
+import ru.spb.yakovlev.stocksmonitor.data.repositories.PricesRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RealTimePricesInteractor @Inject constructor(
-private val realTimeQuotesProvider: RealTimeQuotesProvider
+    private val pricesRepository: PricesRepository
 ) {
-    fun start()=realTimeQuotesProvider.initWebSocket()
+    suspend fun start() = pricesRepository.startPriceMonitoring()
 
-    fun stop()=realTimeQuotesProvider.closeWebSocket()
+    fun stop() = pricesRepository.stopPriceMonitoring()
 }

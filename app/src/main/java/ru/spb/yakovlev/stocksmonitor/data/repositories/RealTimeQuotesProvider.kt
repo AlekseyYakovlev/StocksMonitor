@@ -63,6 +63,7 @@ class RealTimeQuotesProvider @Inject constructor(
 
             override fun onMessage(message: String?) {
                 message?.let { msg ->
+                    Timber.tag("123456").d(msg)
                     moshi.adapter(TradesResponse::class.java)
                         .fromJson(msg)
                         ?.data

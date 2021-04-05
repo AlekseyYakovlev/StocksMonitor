@@ -2,9 +2,13 @@ package ru.spb.yakovlev.stocksmonitor.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.addRepeatingJob
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import ru.spb.yakovlev.stocksmonitor.R
 import ru.spb.yakovlev.stocksmonitor.model.interactors.RealTimePricesInteractor
 import javax.inject.Inject
@@ -23,7 +27,10 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
     override fun onResume() {
         super.onResume()
-        realTimePricesInteractor.start()
+        lifecycleScope.launch {
+            realTimePricesInteractor.start()
+        }
+
     }
 
     override fun onPause() {
