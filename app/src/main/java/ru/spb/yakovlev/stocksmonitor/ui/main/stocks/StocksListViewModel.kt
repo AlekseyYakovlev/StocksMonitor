@@ -18,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StocksListViewModel @Inject constructor(
     private val getDefaultCompanyListUseCase: GetDefaultCompanyListUseCase,
+    private val updateSubsForRealTimePricesUseCase: UpdateSubsForRealTimePricesUseCase,
     getPriceForTickerUseCase: GetPriceForTickerUseCase,
     getFavoriteStatusUseCase: GetFavoriteStatusUseCase,
     updateFavoriteStatusUseCase: UpdateFavoriteStatusUseCase,
@@ -29,6 +30,7 @@ class StocksListViewModel @Inject constructor(
     override suspend fun getStocksList(): Flow<List<StockItemData>> =
         getDefaultCompanyListUseCase()
             .map { list ->
+                updateSubsForRealTimePricesUseCase(list.map { it.ticker })
                 list.map { it.toStockItemData() }
             }
             .flowOn(Dispatchers.IO)

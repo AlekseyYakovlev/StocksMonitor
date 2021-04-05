@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import ru.spb.yakovlev.stocksmonitor.model.interactors.GetFavoriteStatusUseCase
-import ru.spb.yakovlev.stocksmonitor.model.interactors.main.GetFavoritesListUseCase
 import ru.spb.yakovlev.stocksmonitor.model.interactors.GetPriceForTickerUseCase
 import ru.spb.yakovlev.stocksmonitor.model.interactors.UpdateFavoriteStatusUseCase
+import ru.spb.yakovlev.stocksmonitor.model.interactors.main.GetFavoritesListUseCase
 import ru.spb.yakovlev.stocksmonitor.ui.main.MainBaseViewModel
 import ru.spb.yakovlev.stocksmonitor.ui.main.StockItemData
 import ru.spb.yakovlev.stocksmonitor.ui.main.toStockItemData

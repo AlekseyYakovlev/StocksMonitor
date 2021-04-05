@@ -28,6 +28,7 @@ class RealTimeQuotesProvider @Inject constructor(
     private val subscriptionsList = mutableListOf<String>()
 
     fun updateSubscriptionsList(newList: List<String>) {
+        Timber.tag("123456789").d(newList.toString())
         val addedElements = newList.filter { it !in subscriptionsList }
         addedElements.forEach { subscribe(it) }
 
@@ -39,7 +40,8 @@ class RealTimeQuotesProvider @Inject constructor(
     }
 
     fun initWebSocket() {
-        val connectionUri: URI = URI("${BuildConfig.WEB_SOCKET}?token=${BuildConfig.FIN_HUB_API_KEY}")
+        val connectionUri: URI =
+            URI("${BuildConfig.WEB_SOCKET}?token=${BuildConfig.FIN_HUB_API_KEY}")
 
         createWebSocketClient(connectionUri)
 
@@ -58,12 +60,12 @@ class RealTimeQuotesProvider @Inject constructor(
 
             override fun onOpen(handshakedata: ServerHandshake?) {
                 _prices.value = DataState.Loading
-                updateSubscriptionsList(subscriptionsList)
+                subscriptionsList.forEach { subscribe(it) }
             }
 
             override fun onMessage(message: String?) {
                 message?.let { msg ->
-                    Timber.tag("123456").d(msg)
+                    Timber.tag("123456789").d(msg)
                     moshi.adapter(TradesResponse::class.java)
                         .fromJson(msg)
                         ?.data
@@ -83,11 +85,13 @@ class RealTimeQuotesProvider @Inject constructor(
     }
 
     private fun subscribe(symbol: String) {
-        webSocketClient.send("{\"type\":\"subscribe\",\"symbol\":\"$symbol\"}")
+        if (webSocketClient.isOpen)
+            webSocketClient.send("{\"type\":\"subscribe\",\"symbol\":\"$symbol\"}")
     }
 
     private fun unsubscribe(symbol: String) {
-        webSocketClient.send("{\"type\":\"unsubscribe\",\"symbol\":\"$symbol\"}")
+        if (webSocketClient.isOpen)
+            webSocketClient.send("{\"type\":\"unsubscribe\",\"symbol\":\"$symbol\"}")
     }
 
 }

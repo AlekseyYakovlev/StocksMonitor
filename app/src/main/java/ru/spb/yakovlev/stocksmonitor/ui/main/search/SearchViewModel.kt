@@ -44,7 +44,8 @@ class SearchViewModel @Inject constructor(
         .distinctUntilChanged()
         .debounce(500)
         .mapLatest { query ->
-            getSearchResultsUseCase(query,4).map { it.toStockItemData() }
+            getSearchResultsUseCase(query, 4)
+                .map { it.toStockItemData() }
         }.flowOn(Dispatchers.IO)
 
     fun getPopular(): List<String> =
@@ -67,7 +68,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun handleQueryChange(query: String?) {
-        if (_searchScreenState.value.isActive){
+        if (_searchScreenState.value.isActive) {
             if (query.isNullOrBlank()) {
                 _searchScreenState.value =
                     _searchScreenState.value.copy(
@@ -86,7 +87,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun handleFocusReceived(){
+    fun handleFocusReceived() {
         if (_searchScreenState.value.query.isBlank()) {
             _searchScreenState.value =
                 _searchScreenState.value.copy(
@@ -122,7 +123,7 @@ class SearchViewModel @Inject constructor(
         clearSearch()
     }
 
-    private fun clearSearch(){
+    private fun clearSearch() {
         _searchScreenState.value =
             _searchScreenState.value.copy(
                 isActive = false,
@@ -133,7 +134,7 @@ class SearchViewModel @Inject constructor(
 
     private fun saveQueryHistory(query: String) {
         if (query.isNotBlank()) {
-            viewModelScope.launch (Dispatchers.IO) {
+            viewModelScope.launch(Dispatchers.IO) {
                 updateResentQueriesUseCase(query)
             }
         }
@@ -146,7 +147,8 @@ data class SearchScreenState(
     val query: String = "",
     val visibleScreen: VisibleScreen = VisibleScreen.DEFAULT,
 )
-enum class VisibleScreen{
+
+enum class VisibleScreen {
     DEFAULT,
     SEARCH_RESULTS,
     SEARCH_SUGGESTIONS
