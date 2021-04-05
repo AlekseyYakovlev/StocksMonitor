@@ -20,5 +20,6 @@ class GetDefaultCompanyListUseCase @Inject constructor(
         indicesRepository.getIndexFlow(DEFAULT_INDEX).map { index ->
             Timber.tag("1234567").d("GetDefaultCompanyListUseCase map")
             companyRepository.getCompaniesByTickers(index.constituents)
+                .dropLast(5) //Not to catch api error "Limit exceed"
         }
 }
