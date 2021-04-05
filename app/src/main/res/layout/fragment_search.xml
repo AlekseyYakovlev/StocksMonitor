@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spacing_16"
     android:layout_marginBottom="@dimen/spacing_8"
-    tools:context=".ui.search.SearchFragment">
+    tools:context=".ui.main.search.SearchFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_start"

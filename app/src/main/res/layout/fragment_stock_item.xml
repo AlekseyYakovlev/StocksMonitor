@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_root"
-    android:background="@drawable/stock_item__shape"
-    android:elevation="@dimen/rv_item_elevation"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_16"
     android:layout_marginVertical="@dimen/spacing_4"
-    android:layout_height="wrap_content">
+    android:background="@drawable/stock_item__shape"
+    android:elevation="@dimen/rv_item_elevation">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ic_logo"
@@ -25,8 +25,8 @@
         tools:src="@tools:sample/avatars" />
 
     <com.google.android.material.textview.MaterialTextView
-        style="@style/H2"
         android:id="@+id/tv_ticker"
+        style="@style/H2"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginStart="@dimen/spacing_12"
@@ -38,13 +38,17 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_company_name"
         style="@style/Body"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="16dp"
         android:layout_marginStart="@dimen/spacing_12"
-        android:layout_marginBottom="@dimen/spacing_14"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/spacing_8"
+        app:autoSizeMaxTextSize="12sp"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_day_delta"
+        app:layout_constraintEnd_toStartOf="@+id/tv_day_delta"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ic_logo"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ticker"
         tools:text="Yandex, LLC" />
 
     <com.google.android.material.textview.MaterialTextView

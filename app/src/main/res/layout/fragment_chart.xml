@@ -1,19 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_current_price"
         style="@style/H1.Black"
-        tools:text = "$131.93"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_32"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="$131.93" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_day_delta"
+        style="@style/Body"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_current_price"
+        tools:text="+55 ₽ (1,15%)" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/prices_chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/gl_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_day_delta" />
+
+
+    <TextView
+        android:id="@+id/tv_chart_status"
+        style="@style/H1.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/prices_chart"
+        app:layout_constraintEnd_toEndOf="@id/prices_chart"
+        app:layout_constraintStart_toStartOf="@id/prices_chart"
+        app:layout_constraintTop_toTopOf="@id/prices_chart"
+        tools:text="NO DATA" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_period"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        app:checkedChip="@id/ch_d"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/prices_chart"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/ch_d"
+            style="@style/Chip.Chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="d" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/ch_w"
+            style="@style/Chip.Chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="w" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/ch_m"
+            style="@style/Chip.Chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="m" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/ch_6m"
+            style="@style/Chip.Chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6m" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/ch_1y"
+            style="@style/Chip.Chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1y" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/ch_all"
+            style="@style/Chip.Chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All" />
+    </com.google.android.material.chip.ChipGroup>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

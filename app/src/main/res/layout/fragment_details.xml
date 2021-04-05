@@ -40,7 +40,7 @@
 
     <TextView
         android:id="@+id/tv_ticker"
-        style="@style/H2"
+        style="@style/Tabs.H2.Black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_16"

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/spacing_16"
+    android:layout_marginVertical="@dimen/spacing_4"
+    android:background="@drawable/stock_item__shape"
+    android:elevation="@dimen/rv_item_elevation">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/spacing_16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/spacing_16" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ic_image"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/new_item__image_height"
+        android:layout_marginStart="@dimen/spacing_8"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:layout_marginBottom="@dimen/spacing_8"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ImageView.Logo"
+        tools:src="@tools:sample/avatars" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_header"
+        style="@style/Tabs.H2.Black"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/ic_image"
+        android:layout_marginTop="@dimen/spacing_8"
+        tools:text="YNDX" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_date"
+        style="@style/Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintTop_toBottomOf="@+id/tv_header"
+        android:layout_marginTop="@dimen/spacing_8"
+        tools:text="YNDX" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_category"
+        style="@style/Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toStartOf="@+id/tv_date"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_header"
+        tools:text="@tools:sample/lorem" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_summary"
+        style="@style/Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_category"
+        android:layout_marginTop="@dimen/spacing_8"
+        tools:text="@tools:sample/lorem/random" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_source"
+        style="@style/Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_summary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/spacing_8"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:autoLink="all"
+        android:linksClickable="true"
+        tools:text="[label](http://example.com)" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,4 +80,13 @@
         <item name="android:textColor">?attr/colorPrimaryVariant</item>
     </style>
 
+    <style name="Chip.Chart" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipCornerRadius">@dimen/stock_item__logo_corner_radius</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:selectableItemBackground">?attr/colorPrimary</item>
+
+
+
+    </style>
+
 </resources>

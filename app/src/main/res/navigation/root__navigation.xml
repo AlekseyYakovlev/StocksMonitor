@@ -20,5 +20,8 @@
         <argument
             android:name="ticker"
             app:argType="string" />
+        <argument
+            android:name="companyName"
+            app:argType="string" />
     </fragment>
 </navigation>

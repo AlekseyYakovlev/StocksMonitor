@@ -23,7 +23,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/search_layout"
-                android:name="ru.spb.yakovlev.stocksmonitor.ui.search.SearchFragment"
+                android:name="ru.spb.yakovlev.stocksmonitor.ui.main.search.SearchFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/fragment_search" />
@@ -57,6 +57,7 @@
             tools:layout="@layout/fragment_stock_item" />
 
     </androidx.core.widget.NestedScrollView>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/search_suggestions_container"
         android:layout_width="match_parent"
@@ -67,24 +68,25 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/search_suggestions"
-            android:name="ru.spb.yakovlev.stocksmonitor.ui.search.SearchSuggestionsFragment"
+            android:name="ru.spb.yakovlev.stocksmonitor.ui.main.search.SearchSuggestionsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_search_suggestions"
             tools:visibility="visible" />
 
     </androidx.core.widget.NestedScrollView>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/search_results_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:fillViewport="true"
+        android:visibility="gone"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/search_results"
-            android:name="ru.spb.yakovlev.stocksmonitor.ui.search.SearchResultsFragment"
+            android:name="ru.spb.yakovlev.stocksmonitor.ui.main.search.SearchResultsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_search_result" />

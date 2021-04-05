@@ -24,4 +24,6 @@
     <dimen name="search__layout_height_collapesed">48dp</dimen>
     <dimen name="search__layout_height_expanded">800dp</dimen>
 
+    <dimen name="new_item__image_height">150dp</dimen>
+
 </resources>
