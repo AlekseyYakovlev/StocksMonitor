@@ -15,4 +15,13 @@ interface NewsDao : BaseDao<NewsEntity> {
         """
     )
     fun findNewsByTickerFlow(ticker: String): Flow<List<NewsEntity>>
+
+    @Query(
+        """
+            SELECT COUNT(*) 
+            FROM NewsEntity
+            WHERE related = :ticker
+        """
+    )
+    fun countNewsByTicker(ticker: String): Int
 }
