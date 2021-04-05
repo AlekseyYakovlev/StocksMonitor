@@ -37,9 +37,11 @@ android {
     flavorDimensions("serverType")
     productFlavors {
         create("serverType") {
-            buildConfigField("String", "BASE_URL", "\"https://finnhub.io/api/v1/\"")
+            buildConfigField("String", "FIN_HUB_BASE_URL", "\"https://finnhub.io/api/v1/\"")
+            buildConfigField("String", "MBOUM_BASE_URL", "\"https://mboum.com/api/v1\"")
             buildConfigField("String", "WEB_SOCKET", "\"wss://ws.finnhub.io\"")
-            buildConfigField("String", "API_KEY", "\"sandbox_c19sl0v48v6tl8v9p8g0\"")
+            buildConfigField("String", "FIN_HUB_API_KEY", "\"c19sl0v48v6tl8v9p8fg\"")
+            buildConfigField("String", "MBOUM_API_KEY", "\"dH605diy5u4ch51yYUsFV8BmRNMXDGHzVLsJkQgxo5gRiyEN1DtiGb7GG8eJ\"")
         }
     }
 
@@ -58,7 +60,7 @@ android {
 dependencies {
 
     // Core
-    implementation("androidx.core:core-ktx:1.5.0-beta03")
+    implementation("androidx.core:core-ktx:1.6.0-alpha01")
 
     // UI
     implementation("androidx.appcompat:appcompat:1.2.0")
@@ -80,8 +82,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
 
     // Lifecycle
-    val lifecycleVersion = "2.3.1"
+    val lifecycleVersion = "2.4.0-alpha01"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
 
@@ -135,8 +138,15 @@ dependencies {
     // ViewBindingPropertyDelegate
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.5")
 
+    // WebSocket
+    implementation ("org.java-websocket:Java-WebSocket:1.5.1")
+
+
     // kotlinx-datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+
+    // MPAndroidChart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
