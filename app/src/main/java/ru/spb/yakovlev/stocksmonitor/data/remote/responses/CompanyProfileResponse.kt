@@ -2,7 +2,9 @@ package ru.spb.yakovlev.stocksmonitor.data.remote.responses
 
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class CompanyProfileResponse(
     @Json(name = "country")
     val country: String = "",
@@ -11,13 +13,13 @@ data class CompanyProfileResponse(
     @Json(name = "exchange")
     val exchange: String = "",
     @Json(name = "finnhubIndustry")
-    val finnhubIndustry: String = "",
+    val industry: String = "",
     @Json(name = "ipo")
     val ipo: String = "",
     @Json(name = "logo")
     val logo: String = "",
     @Json(name = "marketCapitalization")
-    val marketCapitalization: Int = 0,
+    val marketCapitalization: Double = 0.0,
     @Json(name = "name")
     val name: String = "",
     @Json(name = "phone")
@@ -27,5 +29,5 @@ data class CompanyProfileResponse(
     @Json(name = "ticker")
     val ticker: String = "",
     @Json(name = "weburl")
-    val weburl: String = ""
+    val webUrl: String = ""
 )

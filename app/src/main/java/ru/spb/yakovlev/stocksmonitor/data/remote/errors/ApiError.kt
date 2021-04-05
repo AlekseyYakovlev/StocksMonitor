@@ -11,4 +11,5 @@ sealed class ApiError(override val message: String) : IOException(message) {
     class UnknownError(message: String?) : ApiError(message ?: "Unknown error")
 }
 
-class ErrorBody(val message: String)
+class ErrorBody(val error: String) {
+}

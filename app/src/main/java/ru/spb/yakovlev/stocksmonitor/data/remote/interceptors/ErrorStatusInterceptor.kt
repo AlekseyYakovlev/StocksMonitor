@@ -17,7 +17,7 @@ class ErrorStatusInterceptor @Inject constructor(private val moshi: Moshi) : Int
         val errMessage = try {
             moshi
                 .adapter(ErrorBody::class.java)
-                .fromJson(response.body!!.string())?.message
+                .fromJson(response.body!!.string())?.error
         } catch (e: JsonEncodingException) {
             e.message
         }

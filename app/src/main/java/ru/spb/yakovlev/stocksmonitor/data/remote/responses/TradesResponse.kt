@@ -2,23 +2,25 @@ package ru.spb.yakovlev.stocksmonitor.data.remote.responses
 
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-data class PriceResponse(
+@JsonClass(generateAdapter = true)
+data class TradesResponse(
     @Json(name = "data")
-    val `data`: List<Data> = listOf(),
+    val data: List<Data>? = listOf(),
     @Json(name = "type")
     val type: String = ""
 ) {
     data class Data(
         @Json(name = "c")
-        val c: List<String> = listOf(),
+        val conditions: List<String> = listOf(),
         @Json(name = "p")
-        val p: Double = 0.0,
+        val price: Double = 0.0,
         @Json(name = "s")
-        val s: String = "",
+        val symbol: String = "",
         @Json(name = "t")
-        val t: Long = 0,
+        val timestamp: Long = 0,
         @Json(name = "v")
-        val v: Int = 0
+        val volume: Int = 0
     )
 }

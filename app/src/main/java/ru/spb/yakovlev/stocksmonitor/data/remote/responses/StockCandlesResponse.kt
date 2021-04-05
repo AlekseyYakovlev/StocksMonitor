@@ -2,21 +2,24 @@ package ru.spb.yakovlev.stocksmonitor.data.remote.responses
 
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.util.*
 
+// History data
+@JsonClass(generateAdapter = true)
 data class StockCandlesResponse(
     @Json(name = "c")
-    val closePrices: List<Double> = listOf(),
+    val closePricesList: List<Double> = listOf(),
     @Json(name = "h")
-    val highPrices: List<Double> = listOf(),
+    val highPricesList: List<Double> = listOf(),
     @Json(name = "l")
-    val lowPrices: List<Double> = listOf(),
+    val lowPricesList: List<Double> = listOf(),
     @Json(name = "o")
-    val openPrices: List<Double> = listOf(),
+    val openPricesList: List<Double> = listOf(),
     @Json(name = "s")
     val status: String = "",
     @Json(name = "t")
-    val timestamp: List<Date> = listOf(),
+    val timestampList: List<Long> = listOf(),
     @Json(name = "v")
-    val volume: List<Int> = listOf()
+    val volumeList: List<Int> = listOf()
 )

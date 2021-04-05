@@ -6,8 +6,9 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import androidx.lifecycle.MutableLiveData
+import javax.inject.Inject
 
-class NetworkMonitor(
+class NetworkMonitor (
     val context: Context
 ) {
     var isConnected: Boolean = true
