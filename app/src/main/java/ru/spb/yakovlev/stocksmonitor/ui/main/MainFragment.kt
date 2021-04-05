@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.addRepeatingJob
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -16,11 +18,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import ru.spb.yakovlev.stocksmonitor.R
 import ru.spb.yakovlev.stocksmonitor.databinding.FragmentMainBinding
-import ru.spb.yakovlev.stocksmonitor.ui.favorites.FavoritesListFragment
-import ru.spb.yakovlev.stocksmonitor.ui.search.SearchResultsFragment
-import ru.spb.yakovlev.stocksmonitor.ui.search.SearchScreenState
-import ru.spb.yakovlev.stocksmonitor.ui.search.SearchViewModel
-import ru.spb.yakovlev.stocksmonitor.ui.stocks.StocksListFragment
+import ru.spb.yakovlev.stocksmonitor.ui.main.favorites.FavoritesListFragment
+import ru.spb.yakovlev.stocksmonitor.ui.main.search.SearchResultsFragment
+import ru.spb.yakovlev.stocksmonitor.ui.main.search.SearchScreenState
+import ru.spb.yakovlev.stocksmonitor.ui.main.search.SearchViewModel
+import ru.spb.yakovlev.stocksmonitor.ui.main.search.VisibleScreen
+import ru.spb.yakovlev.stocksmonitor.ui.main.stocks.StocksListFragment
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -29,7 +32,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val vb by viewBinding(FragmentMainBinding::bind)
 
     private lateinit var collectionAdapter: VPCollectionAdapterOld
-    private var lastScreenState = SearchScreenState()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,30 +40,36 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun setupViews() {
         setupViewPager()
-        setupSearch()
+        setupScreensVisibility()
     }
 
-    private fun setupSearch() {
-        lifecycleScope.launchWhenResumed {
-            viewModel.searchScreenState.collectLatest(::renderSearchState)
+    private fun setupScreensVisibility() {
+        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.RESUMED) {
+            viewModel.searchScreenState.collectLatest(::renderScreenState)
         }
     }
 
-    private fun renderSearchState(state: SearchScreenState) {
-        if (lastScreenState.isDefaultScreenShown != state.isDefaultScreenShown) {
-            vb.tabLayout.isVisible = state.isDefaultScreenShown
-            vb.pagerContainer.isVisible = state.isDefaultScreenShown
+    private fun renderScreenState(state: SearchScreenState) {
+        when(state.visibleScreen){
+            VisibleScreen.DEFAULT -> {
+                vb.tabLayout.isVisible = true
+                vb.pagerContainer.isVisible = true
+                vb.searchSuggestionsContainer.isVisible = false
+                vb.searchResultsContainer.isVisible = false
+            }
+            VisibleScreen.SEARCH_RESULTS -> {
+                vb.tabLayout.isVisible = false
+                vb.pagerContainer.isVisible = false
+                vb.searchSuggestionsContainer.isVisible = false
+                vb.searchResultsContainer.isVisible = true
+            }
+            VisibleScreen.SEARCH_SUGGESTIONS -> {
+                vb.tabLayout.isVisible = false
+                vb.pagerContainer.isVisible = false
+                vb.searchSuggestionsContainer.isVisible = true
+                vb.searchResultsContainer.isVisible = false
+            }
         }
-        if (lastScreenState.areSuggestionsShown != state.areSuggestionsShown) {
-            vb.tabLayout.isVisible = !state.areSuggestionsShown
-            vb.searchSuggestionsContainer.isVisible = state.areSuggestionsShown
-        }
-        if (lastScreenState.areResultsShown != state.areResultsShown) {
-            vb.tabLayout.isVisible = !state.areResultsShown
-            vb.searchResultsContainer.isVisible = state.areResultsShown
-        }
-
-        lastScreenState = state.copy()
     }
 
     private fun setupViewPager() {

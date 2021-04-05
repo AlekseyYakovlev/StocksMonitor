@@ -17,7 +17,9 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.spb.yakovlev.stocksmonitor.R
 import ru.spb.yakovlev.stocksmonitor.databinding.FragmentDetailsBinding
 import ru.spb.yakovlev.stocksmonitor.navigation.Navigator
-import ru.spb.yakovlev.stocksmonitor.ui.chart.ChartFragmentFragment
+import ru.spb.yakovlev.stocksmonitor.ui.details.chart.ChartFragmentFragment
+import ru.spb.yakovlev.stocksmonitor.ui.details.news.NewsFragment
+import ru.spb.yakovlev.stocksmonitor.ui.details.summery.AboutCompanyFragment
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -39,13 +41,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     }
 
     private fun setupViews() {
-        // val ticker = args.ticker
-
         vb.icBack.setOnClickListener {
             navigator.back()
         }
 
         vb.tvTicker.text = args.ticker
+        vb.tvCompanyName.text = args.companyName
 
         lifecycleScope.launchWhenResumed {
             viewModel.getIsFavoriteState(ticker).collectLatest {
@@ -56,11 +57,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             viewModel.handleStarClick(ticker, !vb.icStar.isChecked)
         }
         setupViewPager()
-
     }
 
     private fun setupViewPager() {
-        collectionAdapter = VPCollectionAdapterDetails(this)
+        collectionAdapter = VPCollectionAdapterDetails(this, args.ticker)
         vb.pager.adapter = collectionAdapter
 
         TabLayoutMediator(vb.tabLayout, vb.pager) { tab, position ->
@@ -104,16 +104,17 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     }
 }
 
-class VPCollectionAdapterDetails(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class VPCollectionAdapterDetails(fragment: Fragment, val ticker: String) :
+    FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment =
         when (position) {
-            0 -> ChartFragmentFragment()
-            1 -> ChartFragmentFragment()
-            2 -> ChartFragmentFragment()
-            else -> ChartFragmentFragment()
+            0 -> ChartFragmentFragment(ticker)
+            1 -> AboutCompanyFragment(ticker)
+            2 -> NewsFragment(ticker)
+            else -> AboutCompanyFragment(ticker)
         }
 
 }

@@ -1,10 +1,12 @@
-package ru.spb.yakovlev.stocksmonitor.ui.search
+package ru.spb.yakovlev.stocksmonitor.ui.main.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.addRepeatingJob
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,21 +30,17 @@ class SearchSuggestionsFragment : Fragment(R.layout.fragment_search_suggestions)
     }
 
     private fun addChips() {
-        viewModel.getPopular1().forEach {
-            vb.cgPopular1.addView(
-                addNewChip(it)
-            )
-        }
-        viewModel.getPopular2().forEach {
-            vb.cgPopular2.addView(
-                addNewChip(it)
-            )
+        viewModel.getPopular().forEachIndexed { index, text ->
+            if (index % 2 == 0) vb.cgPopular1.addView(addNewChip(text))
+            else vb.cgPopular2.addView(addNewChip(text))
         }
 
-        lifecycleScope.launchWhenResumed {
+        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.RESUMED) {
             viewModel.getRecent().collectLatest {
+                vb.tvRecentTitle.isVisible = it.isNotEmpty()
                 vb.cgRecent1.removeAllViews()
                 vb.cgRecent2.removeAllViews()
+
                 it.forEachIndexed { index, text ->
                     if (index % 2 == 0) vb.cgRecent1.addView(addNewChip(text))
                     else vb.cgRecent2.addView(addNewChip(text))

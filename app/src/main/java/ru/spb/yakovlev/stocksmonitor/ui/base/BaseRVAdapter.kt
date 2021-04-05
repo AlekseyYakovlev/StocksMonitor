@@ -15,7 +15,7 @@ import androidx.viewbinding.ViewBinding
  */
 class BaseRVAdapter<T : ViewBinding, R : RvItemData>(
     private val viewHolderInflater: (LayoutInflater, ViewGroup, Boolean) -> T,
-    private val viewHolderBinder: (T, R, position: Int) -> Unit
+    private val viewHolderBinder: (T, R, position: Int) -> Unit,
 ) : RecyclerView.Adapter<BaseRVAdapter.BaseVH<T, R>>() {
 
     private val itemsList = mutableListOf<R>()
@@ -32,7 +32,15 @@ class BaseRVAdapter<T : ViewBinding, R : RvItemData>(
     override fun getItemCount(): Int = itemsList.size
 
     override fun onBindViewHolder(holder: BaseVH<T, R>, position: Int) {
-        holder.bind(itemsList[position], position)
+        holder.bind(itemsList[position], holder.adapterPosition)
+    }
+
+    override fun onViewAttachedToWindow(holder: BaseVH<T, R>) {
+        super.onViewAttachedToWindow(holder)
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
     }
 
     fun updateData(newItems: List<R>) {

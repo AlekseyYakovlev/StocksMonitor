@@ -1,25 +1,29 @@
 package ru.spb.yakovlev.stocksmonitor.ui.details
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import ru.spb.yakovlev.stocksmonitor.data.repositories.MokkData
-import ru.spb.yakovlev.stocksmonitor.ui.main.StockItemData
-import ru.spb.yakovlev.stocksmonitor.ui.main.toStockItemData
+import kotlinx.coroutines.launch
+import ru.spb.yakovlev.stocksmonitor.model.Company
+import ru.spb.yakovlev.stocksmonitor.model.interactors.GetCompanyByTickerUseCase
+import ru.spb.yakovlev.stocksmonitor.model.interactors.GetFavoriteStatusUseCase
+import ru.spb.yakovlev.stocksmonitor.model.interactors.UpdateFavoriteStatusUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val mokkData: MokkData
+    private val getFavoriteStatusUseCase: GetFavoriteStatusUseCase,
+    private val updateFavoriteStatusUseCase: UpdateFavoriteStatusUseCase,
 ) : ViewModel() {
 
-    fun getStockByTicker(ticker: String): Flow<StockItemData> =
-        mokkData.getStockByTicker(ticker).map { it.toStockItemData() }
-
-    fun handleStarClick(ticker: String, isFavorite: Boolean): Boolean =
-        mokkData.updateFavorites(ticker, isFavorite)
-
     fun getIsFavoriteState(ticker: String): Flow<Boolean> =
-        mokkData.getIsFavoriteState(ticker)
+        getFavoriteStatusUseCase(ticker)
+
+    fun handleStarClick(ticker: String, isFavorite: Boolean) =
+        viewModelScope.launch(Dispatchers.IO) {
+            updateFavoriteStatusUseCase(ticker, isFavorite)
+        }
+
 }
