@@ -20,12 +20,12 @@ class Navigator @Inject constructor(
         activity.onBackPressedDispatcher.onBackPressed()
     }
 
-    fun goTo(destination: Destination, args: String? = null) {
+    fun goTo(destination: Destination, vararg args: String) {
         when (destination) {
-            TICKER_DETAILS_FRAGMENT -> args?.let {
+            TICKER_DETAILS_FRAGMENT ->{
                 navController.navigate(
                     R.id.action_mainFragment_to_detailsFragment,
-                    DetailsFragmentArgs(it).toBundle()
+                    DetailsFragmentArgs(args[0],args[1]).toBundle()
                 )
             }
             MAIN_FRAGMENT -> navController.navigate(R.id.mainFragment)
