@@ -66,7 +66,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         TabLayoutMediator(vb.tabLayout, vb.pager) { tab, position ->
             tab.text = when (position) {
                 0 -> resources.getString(R.string.details__title_chart)
-                1 -> resources.getString(R.string.details__title_summery)
+                1 -> resources.getString(R.string.details__title_summary)
                 2 -> resources.getString(R.string.details__title_news)
                 else -> "Error"
             }

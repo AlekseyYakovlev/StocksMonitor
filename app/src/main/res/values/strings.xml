@@ -6,9 +6,9 @@
     <string name="search_recent_title">You’ve searched for this</string>
     <string name="search_popular_title">Popular requests</string>
     <string name="details__title_chart">Chart</string>
-    <string name="details__title_summery">Summery</string>
+    <string name="details__title_summary">Summary</string>
     <string name="details__title_news">News</string>
     <string name="main__delta_text">%s%s (%s)</string>
-    <string name="chart__loading">Loading...</string>
+    <string name="chart__loading">Loading…</string>
     <string name="chart__no_data">NO DATA</string>
 </resources>
