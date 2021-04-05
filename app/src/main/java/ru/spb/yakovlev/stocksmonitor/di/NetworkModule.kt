@@ -12,31 +12,24 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.spb.yakovlev.stocksmonitor.BuildConfig
 import ru.spb.yakovlev.stocksmonitor.data.remote.NetworkMonitor
-import ru.spb.yakovlev.stocksmonitor.data.remote.RestService
+import ru.spb.yakovlev.stocksmonitor.data.remote.FinHubRestService
 import ru.spb.yakovlev.stocksmonitor.data.remote.adapters.DateAdapter
+import ru.spb.yakovlev.stocksmonitor.data.remote.interceptors.ApiKeyAuthenticator
 import ru.spb.yakovlev.stocksmonitor.data.remote.interceptors.ErrorStatusInterceptor
 import ru.spb.yakovlev.stocksmonitor.data.remote.interceptors.NetworkStatusInterceptor
-import ru.spb.yakovlev.stocksmonitor.data.remote.interceptors.TokenAuthenticator
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class NetworkModule {
-
-    @Provides
-    @Singleton
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
-        HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
+internal object NetworkModule {
 
     @Provides
     @Singleton
     fun providesRestService(
         retrofit: Retrofit
-    ): RestService =
-        retrofit.create(RestService::class.java)
+    ): FinHubRestService =
+        retrofit.create(FinHubRestService::class.java)
 
     @Provides
     @Singleton
@@ -46,26 +39,38 @@ class NetworkModule {
     ): Retrofit =
         Retrofit.Builder()
             .client(client)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .baseUrl(BuildConfig.FIN_HUB_BASE_URL)
             .build()
 
     @Provides
     @Singleton
     fun providesOkHttpClient(
-        tokenAuthenticator: TokenAuthenticator,
+        apiKeyAuthenticator: ApiKeyAuthenticator,
         networkStatusInterceptor: NetworkStatusInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor,
         errorStatusInterceptor: ErrorStatusInterceptor
     ): OkHttpClient =
         OkHttpClient().newBuilder()
-            .readTimeout(2, TimeUnit.SECONDS)  // socket timeout (GET)
+            .readTimeout(25, TimeUnit.SECONDS)  // socket timeout (GET)
             .writeTimeout(5, TimeUnit.SECONDS) // socket timeout (POST, PUT, etc.)
-            .authenticator(tokenAuthenticator)         // refresh token if response code == 401
             .addInterceptor(networkStatusInterceptor)  // intercept network status
+            .addInterceptor(apiKeyAuthenticator)       // add token for every request
             .addInterceptor(httpLoggingInterceptor)    // log requests/results
             .addInterceptor(errorStatusInterceptor)    // intercept network errors
             .build()
+
+    @Provides
+    @Singleton
+    fun provideApiKeyAuthenticator(): ApiKeyAuthenticator =
+        ApiKeyAuthenticator(BuildConfig.FIN_HUB_API_KEY)
+
+    @Provides
+    @Singleton
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 
     @Provides
     @Singleton
@@ -81,11 +86,6 @@ class NetworkModule {
     ): ErrorStatusInterceptor =
         ErrorStatusInterceptor(moshi)
 
-    @Provides
-    @Singleton
-    fun provideTokenAuthenticator(
-    ): TokenAuthenticator =
-        TokenAuthenticator()
 
     @Provides
     @Singleton

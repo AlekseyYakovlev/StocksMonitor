@@ -9,7 +9,7 @@ import dagger.hilt.android.components.ActivityComponent
 
 @InstallIn(ActivityComponent::class)
 @Module
-class ActivityModule {
+internal object ActivityModule {
     @Provides
     fun providesActivity(
         activity: Activity
